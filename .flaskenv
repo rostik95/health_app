@@ -1,0 +1,2 @@
+FLASK_APP=health_app.py
+FLASK_DEBUG=True
