@@ -5,8 +5,14 @@ from .routes.user import user
 from .routes.main import main
 
 
-app = Flask(__name__)
-app.config.from_object(Config)
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
 
-app.register_blueprint(user)
-app.register_blueprint(main)
+    app.register_blueprint(user)
+    app.register_blueprint(main)
+
+    db.init_app(app)
+    migrate.init_app(app, db)
+
+    return app
