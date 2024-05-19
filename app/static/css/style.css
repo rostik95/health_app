@@ -1,1 +1,5 @@
 @import url('fonts.css');
+
+.btn-link:hover {
+    color: white;
+}
