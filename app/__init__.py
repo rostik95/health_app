@@ -6,7 +6,7 @@ from .config import Config
 from .extensions import db, migrate, login
 from .routes.user import user_bp
 from .routes.nutrition import nutrition_bp
-from .models.user import User
+from .models.user import User, Weight
 
 
 def create_app(config_class=Config):
@@ -22,6 +22,7 @@ def create_app(config_class=Config):
     # login.login_view = 'user_bp.login'
     admin = Admin(app, name='health_app', template_mode='bootstrap3')
     admin.add_view(ModelView(User, db.session))
+    admin.add_view(ModelView(Weight, db.session))
 
     return app
 
