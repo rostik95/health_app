@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}Профиль пользователя "{{ current_user.username }}"{% endblock %}
+{% block content %}
+<p class="h1">{{ user.username }}</p>
+<p class="text-left">Ваш рост составляет {{ user.height_in_cm }} см</p>
+Ваш вес составляет {{ weights[0].value_in_kg }} кг</p>
+<br>
+
+{% if BMI < 16 %}
+<div class="alert alert-primary">ИМТ: {{ BMI }} Значительный дефицит массы тела</div>
+{% elif 16 <= BMI < 18.5 %}
+<div class="alert alert-info">ИМТ: {{ BMI }} Дефицит массы тела</div>
+{% elif 18.5 <= BMI < 25 %}
+<div class="alert alert-success">ИМТ: {{ BMI }} Норма</div>
+{% elif 25 <= BMI < 30 %}
+<div class="alert alert-success">ИМТ: {{ BMI }} Лишний вес</div>
+{% elif 30 <= BMI < 35 %}
+<div class="alert alert-warning">ИМТ: {{ BMI }} Ожирение первой степени</div>
+{% elif 35 <= BMI < 40 %}
+<div class="alert alert-danger">ИМТ: {{ BMI }} Ожирение второй степени</div>
+{% elif BMI >= 40 %}
+<div class="alert alert-danger">ИМТ: {{ BMI }} Ожирение третьей степени</div>
+{% endif %}
+<a href="{{ url_for('user_bp.update_me', username=current_user.username)}}" class="btn btn-primary">Изменить показатели</a>
+<br>
+
+<script type="text/javascript">
+    // Объявляем пустые списки
+    var valueInKgList = [];
+    var datesList = [];
+
+    {% for weight in weights %}
+        // Добавляем элементы в списки
+        valueInKgList.push({{ weight.value_in_kg }});
+        datesList.push('{{ weight.timestamp.date() }}');
+    {% endfor %}
+
+    // Пример использования списков
+</script>
+
+<br><br><br>
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+
+            <!-- График -->
+            <div id="chart">
+
+                <script>
+                    $(document).ready(function () {
+                        $("#chart").shieldChart({
+                            theme: "light",
+                            primaryHeader: {
+                                text: "График изменения веса"
+                            },
+                            exportOptions: {
+                                image: false,
+                                print: false
+                            },
+                            axisX: {
+                                categoricalValues: datesList
+                            },
+                            tooltipSettings: {
+                                chartBound: true,
+                                axisMarkers: {
+                                    enabled: true,
+                                    mode: 'xy'
+                                }
+                            },
+                            dataSeries: [{
+                                seriesType: 'line',
+                                collectionAlias: "Вес в кг",
+                                data: valueInKgList
+                            }]
+                        });
+                    });
+                </script><!-- /.График -->
+
+            </div><!-- /.col-md-8 col-md-offset-2 -->
+        </div><!-- /.row -->
+
+    {% endblock %}

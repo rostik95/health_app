@@ -40,6 +40,24 @@
         <div class="alert alert-danger">{{ error }}</div>
         {% endfor %}
     </div>
+    <div class="form-group row">
+        {{ form.height.label(class_="col-sm-2 col-form-label") }}
+        <div class="col-sm-10">
+            {{ form.height(size=32) }} см
+        </div>
+        {% for error in form.height.errors %}
+        <div class="alert alert-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+    <div class="form-group row">
+        {{ form.weight.label(class_="col-sm-2 col-form-label") }}
+        <div class="col-sm-10">
+            {{ form.weight(size=32) }} кг
+        </div>
+        {% for error in form.weight.errors %}
+        <div class="alert alert-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
     {{ form.submit(class_="btn btn-primary") }}
 </form>
 {% endblock %}

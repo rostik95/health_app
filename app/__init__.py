@@ -2,6 +2,8 @@ from flask import Flask
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_login import LoginManager
+
+from .admin.user import WeightView
 from .config import Config
 from .extensions import db, migrate, login
 from .routes.user import user_bp
@@ -19,10 +21,10 @@ def create_app(config_class=Config):
     db.init_app(app)
     migrate.init_app(app, db)
     login.init_app(app)
-    # login.login_view = 'user_bp.login'
+    
     admin = Admin(app, name='health_app', template_mode='bootstrap3')
     admin.add_view(ModelView(User, db.session))
-    admin.add_view(ModelView(Weight, db.session))
+    admin.add_view(WeightView(Weight, db.session))
 
     return app
 

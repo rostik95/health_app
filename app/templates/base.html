@@ -5,7 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <link type="text/css" rel="StyleSheet" href="https://bootstraptema.ru/plugins/2016/shieldui/style.css" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+
+  <script src="https://bootstraptema.ru/plugins/jquery/jquery-1.11.3.min.js"></script>
+  <script src="https://bootstraptema.ru/plugins/2016/shieldui/script.js"></script>
   <title>{% block title %}{% endblock %}</title>
 </head>
 
@@ -38,6 +42,9 @@
           <button type="button" class="btn btn-primary">Регистрация</button>
         </a>
         {% else %}
+        <a style="text-decoration: none;" href="{{ url_for('user_bp.about_me', username=current_user.username) }}">
+          <button type="button" class="btn btn-primary">Редактировать профиль</button>
+        </a>
         <a style="text-decoration: none;" href="{{ url_for('user_bp.logout') }}">
           <button type="button" class="btn btn-primary">Выйти</button>
         </a>
@@ -57,6 +64,6 @@
 
     {% block content %}{% endblock %}
   </div>
+  <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 </body>
-
 </html>

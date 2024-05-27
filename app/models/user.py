@@ -16,15 +16,20 @@ class User(UserMixin, db.Model):
 
     weights: Mapped[list["Weight"]] = relationship(back_populates="user", cascade="all, delete-orphan")
     
-    def __repr__(self) -> str:
-        return 'User {}'.format(self.username)
-    
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
     
+    def add_weight(self, weight: float):
+        if self.weights:
+            self.weights.append(Weight(value_in_kg=weight))
+        else:
+            self.weights = [Weight(value_in_kg=weight)]
+
+    def __repr__(self) -> str:
+        return f'User {self.username!r}'
 
 class Weight(db.Model):
     __tablename__ = 'weight'
@@ -35,3 +40,6 @@ class Weight(db.Model):
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
 
     user: Mapped["User"] = relationship(back_populates="weights")
+
+    def __repr__(self) -> str:
+        return f'{self.value_in_kg!r} at {self.timestamp!r}'
