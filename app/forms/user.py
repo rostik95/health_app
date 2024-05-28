@@ -1,8 +1,9 @@
 from flask_wtf import FlaskForm
 from flask_wtf.form import _Auto
-from wtforms import IntegerField, FloatField, StringField, PasswordField, BooleanField, SubmitField, TextAreaField
+from wtforms import IntegerField, StringField, PasswordField, BooleanField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, NumberRange
 from app import db
+from .custom import MyFloatField
 from ..models.user import User
 
 
@@ -21,7 +22,7 @@ class BodyParametersMixin:
             NumberRange(min=0, message='Введите число не меньше нуля')
                 ]
             )
-    weight = FloatField(
+    weight = MyFloatField(
         label='Введите вес',
         validators=[
             DataRequired('Поле веса не должно быть пустым'),
