@@ -160,4 +160,4 @@ cython_debug/
 .idea/
 
 # Папка с медиа файлами
-static/media/
+app/static/media/
