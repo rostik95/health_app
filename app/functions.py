@@ -1,9 +1,9 @@
-from pathlib import Path
-import secrets
 import os
-from PIL import Image
+import secrets
+from pathlib import Path
 
 from flask import current_app
+from PIL import Image
 
 
 def save_picture(path: str, picture: Image) -> str:

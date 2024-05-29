@@ -5,10 +5,10 @@ from flask_login import LoginManager
 
 from .admin.user import WeightView
 from .config import Config
-from .extensions import db, migrate, login
-from .routes.user import user_bp
-from .routes.nutrition import nutrition_bp
+from .extensions import db, login, migrate
 from .models.user import User, Weight
+from .routes.nutrition import nutrition_bp
+from .routes.user import user_bp
 
 
 def create_app(config_class=Config):

@@ -1,12 +1,14 @@
 from typing import Iterable
+
+from flask import (Blueprint, Response, abort, flash, redirect,
+                   render_template, request, url_for)
+from flask_login import current_user, login_required, login_user, logout_user
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
-from flask import Blueprint, Response, redirect, request, render_template, abort, url_for, flash
-from ..models.user import User, Weight
-from flask_login import current_user, login_required, login_user, logout_user
-from ..forms.user import LoginForm, RegistrationForm, ChangeBodyParametersForm
-from ..extensions import db
 
+from ..extensions import db
+from ..forms.user import ChangeBodyParametersForm, LoginForm, RegistrationForm
+from ..models.user import User, Weight
 
 user_bp = Blueprint('user_bp', __name__, url_prefix='/user')
 

@@ -1,9 +1,10 @@
-from sqlalchemy import ForeignKey, String, Integer
-from ..extensions import db
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-from typing import TYPE_CHECKING
 from datetime import datetime, timezone
+from typing import TYPE_CHECKING
 
+from sqlalchemy import ForeignKey, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from ..extensions import db
 
 if TYPE_CHECKING:
     from .user import User

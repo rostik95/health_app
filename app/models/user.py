@@ -1,10 +1,12 @@
 from datetime import datetime, timezone
-from sqlalchemy import Float, ForeignKey, String, Integer
-from ..extensions import db
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
-from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import TYPE_CHECKING
+
+from flask_login import UserMixin
+from sqlalchemy import Float, ForeignKey, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from werkzeug.security import check_password_hash, generate_password_hash
+
+from ..extensions import db
 
 if TYPE_CHECKING:
     from .nutrition import Ingestion

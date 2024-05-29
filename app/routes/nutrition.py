@@ -1,15 +1,14 @@
-from flask import Blueprint, redirect, render_template, url_for, abort
-from flask_login import current_user, login_required
-from sqlalchemy import select, func
 from datetime import datetime
 
-from ..models.user import User
+from flask import Blueprint, abort, redirect, render_template, url_for
+from flask_login import current_user, login_required
+from sqlalchemy import func, select
 
 from ..extensions import db
+from ..forms.nutrition import AddFoodForm, IngestionForm
 from ..functions import save_picture
 from ..models.nutrition import Food, Ingestion
-from ..forms.nutrition import AddFoodForm, IngestionForm
-
+from ..models.user import User
 
 nutrition_bp = Blueprint('nutrition_bp', __name__)
 

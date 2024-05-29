@@ -1,10 +1,14 @@
 from flask_wtf import FlaskForm
 from flask_wtf.form import _Auto
-from wtforms import IntegerField, StringField, PasswordField, BooleanField, SubmitField, TextAreaField
-from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, NumberRange
+from wtforms import (BooleanField, IntegerField, PasswordField, StringField,
+                     SubmitField, TextAreaField)
+from wtforms.validators import (DataRequired, Email, EqualTo, NumberRange,
+                                ValidationError)
+
 from app import db
-from .custom import MyFloatField
+
 from ..models.user import User
+from .custom import MyFloatField
 
 
 class LoginForm(FlaskForm):
