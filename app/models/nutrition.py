@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 
 class Food(db.Model):
-    __tablename__ = 'food'
+    __tablename__ = "food"
     id: Mapped[int] = mapped_column(primary_key=True)
     photo: Mapped[str] = mapped_column(String)
     name: Mapped[str] = mapped_column(String(150))
@@ -20,19 +20,23 @@ class Food(db.Model):
     fats: Mapped[int] = mapped_column(Integer)
     carbs: Mapped[int] = mapped_column(Integer)
 
-    ingestions: Mapped[list["Ingestion"]] = relationship(back_populates="food", cascade="all, delete-orphan")
+    ingestions: Mapped[list["Ingestion"]] = relationship(
+        back_populates="food", cascade="all, delete-orphan"
+    )
 
     def __repr__(self) -> str:
-        return f'{self.name!r}'
-    
+        return f"{self.name!r}"
+
 
 class Ingestion(db.Model):
-    __tablename__ = 'ingestion'
+    __tablename__ = "ingestion"
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
     food_id: Mapped[int] = mapped_column(ForeignKey("food.id"))
     grams: Mapped[int] = mapped_column(Integer)
-    timestamp: Mapped[datetime] = mapped_column(default=lambda: datetime.now(timezone.utc))
+    timestamp: Mapped[datetime] = mapped_column(
+        default=lambda: datetime.now(timezone.utc)
+    )
 
     user: Mapped["User"] = relationship(back_populates="ingestions")
     food: Mapped["Food"] = relationship(back_populates="ingestions")

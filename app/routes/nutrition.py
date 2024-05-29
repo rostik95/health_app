@@ -10,33 +10,34 @@ from ..functions import save_picture
 from ..models.nutrition import Food, Ingestion
 from ..models.user import User
 
-nutrition_bp = Blueprint('nutrition_bp', __name__)
+nutrition_bp = Blueprint("nutrition_bp", __name__)
 
-@nutrition_bp.route('/')
+
+@nutrition_bp.route("/")
 def index():
     foods = Food.query.all()
-    return render_template('nutrition/index.html', foods=foods)
+    return render_template("nutrition/index.html", foods=foods)
 
 
-@nutrition_bp.route('/add_food', methods=['GET', 'POST'])
+@nutrition_bp.route("/add_food", methods=["GET", "POST"])
 def add_food():
     form = AddFoodForm()
     if form.validate_on_submit():
         food = Food(
-            photo=save_picture('nutrition/', form.photo.data),
+            photo=save_picture("nutrition/", form.photo.data),
             name=form.name.data,
             kcal=form.kcal.data,
             proteins=form.proteins.data,
             fats=form.fats.data,
-            carbs=form.carbs.data
+            carbs=form.carbs.data,
         )
         db.session.add(food)
         db.session.commit()
-        return redirect(url_for('nutrition_bp.index'))
-    return render_template('nutrition/add_food.html', form=form)
+        return redirect(url_for("nutrition_bp.index"))
+    return render_template("nutrition/add_food.html", form=form)
 
 
-@nutrition_bp.route('/ingestion/<food_id>', methods=['GET', 'POST'])
+@nutrition_bp.route("/ingestion/<food_id>", methods=["GET", "POST"])
 @login_required
 def ingestion(food_id: int):
     form = IngestionForm()
@@ -53,14 +54,20 @@ def ingestion(food_id: int):
         ingestion = Ingestion(grams=form.grams.data, user=user, food=food)
         db.session.add(ingestion)
         db.session.commit()
-        return redirect(url_for('nutrition_bp.index'))
-    return render_template('nutrition/ingestion.html', form=form)
+        return redirect(url_for("nutrition_bp.index"))
+    return render_template("nutrition/ingestion.html", form=form)
 
-@nutrition_bp.route('/kcal_received')
+
+@nutrition_bp.route("/kcal_received")
 @login_required
 def kcal_received():
-    stmt = (select(Ingestion).filter(func.date(Ingestion.timestamp) == datetime.now().date())
-            .filter(Ingestion.user_id == current_user.id))
+    stmt = (
+        select(Ingestion)
+        .filter(func.date(Ingestion.timestamp) == datetime.now().date())
+        .filter(Ingestion.user_id == current_user.id)
+    )
     ingestions: list[Ingestion] = db.session.scalars(stmt).all()
     kcal_all = round(sum(map(lambda x: x.food.kcal / 100 * x.grams, ingestions)), 2)
-    return render_template('nutrition/kcal_received.html', ingestions=ingestions, kcal_all=kcal_all)
+    return render_template(
+        "nutrition/kcal_received.html", ingestions=ingestions, kcal_all=kcal_all
+    )

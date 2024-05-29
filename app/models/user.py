@@ -20,15 +20,19 @@ class User(UserMixin, db.Model):
     password_hash: Mapped[str] = mapped_column(String(256))
     height_in_cm: Mapped[int] = mapped_column(Integer, nullable=True)
 
-    weights: Mapped[list["Weight"]] = relationship(back_populates="user", cascade="all, delete-orphan")
-    ingestions: Mapped[list["Ingestion"]] = relationship(back_populates="user", cascade="all, delete-orphan")
-    
+    weights: Mapped[list["Weight"]] = relationship(
+        back_populates="user", cascade="all, delete-orphan"
+    )
+    ingestions: Mapped[list["Ingestion"]] = relationship(
+        back_populates="user", cascade="all, delete-orphan"
+    )
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
-    
+
     def add_weight(self, weight: float):
         if self.weights:
             self.weights.append(Weight(value_in_kg=weight))
@@ -36,17 +40,20 @@ class User(UserMixin, db.Model):
             self.weights = [Weight(value_in_kg=weight)]
 
     def __repr__(self) -> str:
-        return f'User {self.username!r}'
+        return f"User {self.username!r}"
+
 
 class Weight(db.Model):
-    __tablename__ = 'weight'
+    __tablename__ = "weight"
     id: Mapped[int] = mapped_column(primary_key=True)
     value_in_kg: Mapped[float] = mapped_column(Float)
-    timestamp: Mapped[datetime] = mapped_column(default=lambda: datetime.now(timezone.utc))
+    timestamp: Mapped[datetime] = mapped_column(
+        default=lambda: datetime.now(timezone.utc)
+    )
 
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
 
     user: Mapped["User"] = relationship(back_populates="weights")
 
     def __repr__(self) -> str:
-        return f'{self.value_in_kg!r} at {self.timestamp!r}'
+        return f"{self.value_in_kg!r} at {self.timestamp!r}"

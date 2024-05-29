@@ -21,8 +21,8 @@ def create_app(config_class=Config):
     db.init_app(app)
     migrate.init_app(app, db)
     login.init_app(app)
-    
-    admin = Admin(app, name='health_app', template_mode='bootstrap3')
+
+    admin = Admin(app, name="health_app", template_mode="bootstrap3")
     admin.add_view(ModelView(User, db.session))
     admin.add_view(WeightView(Weight, db.session))
 
