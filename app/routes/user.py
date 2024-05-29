@@ -1,7 +1,7 @@
 from typing import Iterable
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
-from flask import Blueprint, Response, redirect, request, render_template, template_rendered, url_for, flash
+from flask import Blueprint, Response, redirect, request, render_template, abort, url_for, flash
 from ..models.user import User, Weight
 from flask_login import current_user, login_required, login_user, logout_user
 from ..forms.user import LoginForm, RegistrationForm, ChangeBodyParametersForm
@@ -43,6 +43,7 @@ def register():
 
 
 @user_bp.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('nutrition_bp.index'))
@@ -55,6 +56,8 @@ def about_me(username: str) -> Response:
         return redirect(url_for('user_bp.about_me', username=current_user.username))
     stmt = select(User).where(User.username == username)
     user: User = db.session.scalar(stmt)
+    if not user:
+        abort(404)
     stmt2 = select(Weight).where(Weight.user_id == user.id).order_by(Weight.timestamp.desc())
     weights: Iterable[Weight] = db.session.scalars(stmt2).all()
     BMI = round(weights[0].value_in_kg / ((user.height_in_cm / 100)**2), 2)
@@ -69,9 +72,9 @@ def update_me(username: str) -> Response:
     form = ChangeBodyParametersForm()
     stmt = select(User).where(User.username == username)
     user: User = db.session.scalar(stmt)
+    if not user:
+        abort(404)
     if form.validate_on_submit():
-        print(form.height.data)
-        print(form.weight.data)
         user.height_in_cm = form.height.data
         user.add_weight(form.weight.data)
         db.session.commit()

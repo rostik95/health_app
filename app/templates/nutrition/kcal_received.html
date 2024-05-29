@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Количество поглощенных килокалорий{% endblock %}
+{% block content %}
+<h1 class="display-3">Количество поглощенных килокалорий</h1>
+<p class="h3">Всего сегодня съедено килокалорий: <b>{{ kcal_all }}</b></p>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Блюдо</th>
+            <th scope="col">Вес</th>
+            <th scope="col">Ккал</th>
+            <th scope="col">Белки</th>
+            <th scope="col">Жиры</th>
+            <th scope="col">Углеводы</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ingestion in ingestions %}
+        <tr>
+            <td>{{ ingestion.food.name }}</td>
+            <td>{{ ingestion.grams }}</td>
+            <td>{{ ingestion.food.kcal }}</td>
+            <td>{{ ingestion.food.proteins }}</td>
+            <td>{{ ingestion.food.fats }}</td>
+            <td>{{ ingestion.food.carbs }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

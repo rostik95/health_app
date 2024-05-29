@@ -58,7 +58,7 @@
                                 print: false
                             },
                             axisX: {
-                                categoricalValues: datesList
+                                categoricalValues: datesList.reverse()
                             },
                             tooltipSettings: {
                                 chartBound: true,
@@ -70,7 +70,7 @@
                             dataSeries: [{
                                 seriesType: 'line',
                                 collectionAlias: "Вес в кг",
-                                data: valueInKgList
+                                data: valueInKgList.reverse()
                             }]
                         });
                     });

@@ -4,6 +4,10 @@ from ..extensions import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .nutrition import Ingestion
 
 
 class User(UserMixin, db.Model):
@@ -15,6 +19,7 @@ class User(UserMixin, db.Model):
     height_in_cm: Mapped[int] = mapped_column(Integer, nullable=True)
 
     weights: Mapped[list["Weight"]] = relationship(back_populates="user", cascade="all, delete-orphan")
+    ingestions: Mapped[list["Ingestion"]] = relationship(back_populates="user", cascade="all, delete-orphan")
     
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

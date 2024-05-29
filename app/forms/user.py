@@ -16,14 +16,14 @@ class LoginForm(FlaskForm):
 
 class BodyParametersMixin:
     height = IntegerField(
-        label='Введите рост',
+        label='Введите рост (см)',
         validators=[
             DataRequired('Поле роста не должно быть пустым'),
             NumberRange(min=0, message='Введите число не меньше нуля')
                 ]
             )
     weight = MyFloatField(
-        label='Введите вес',
+        label='Введите вес (кг)',
         validators=[
             DataRequired('Поле веса не должно быть пустым'),
             NumberRange(min=0, message='Введите число не меньше нуля')

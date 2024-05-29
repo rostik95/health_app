@@ -1,5 +1,38 @@
 {% extends 'base.html' %}
 {% block title %}Главная страница{% endblock %}
 {% block content %}
-<h1>This is index page</h1>
+<h1>Список продуктов</h1>
+<div class="list-group">
+    {% for food in foods %}
+    <a href="{{ url_for('nutrition_bp.ingestion', food_id=food.id)}}" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+        {% if food.photo %}
+        <img src="{{ url_for('static', filename='media/' + food.photo) }}" alt="twbs" width="128" height="128"
+            class="rounded flex-shrink-0">
+        {% endif %}
+        <div class="d-flex gap-2 w-100 justify-content-between">
+            <div>
+                <h6 class="mb-0">{{ food.name }}</h6>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Ккал</th>
+                        <th scope="col">Белки</th>
+                        <th scope="col">Жиры</th>
+                        <th scope="col">Углеводы</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ food.kcal }}</td>
+                        <td>{{ food.proteins }}</td>
+                        <td>{{ food.fats }}</td>
+                        <td>{{ food.carbs }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </a>
+    {% endfor %}
+</div>
 {% endblock %}

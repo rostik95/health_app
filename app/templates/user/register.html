@@ -2,5 +2,7 @@
 {% block title %}Страница авторизации{% endblock %}
 {% block content %}
 <h1 class="display-3">Регистрация</h1>
-{% include '_form.html' %}
+<form class="form-inline" action="" method="post" novalidate>
+    {% include '_form.html' %}
+</form>
 {% endblock %}
